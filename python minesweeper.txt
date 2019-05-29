@@ -1,0 +1,56 @@
+import random
+a1=0
+a2=0
+a3=0
+a4=0
+b1=0
+b2=0
+b3=0
+b4=0
+c1=0
+c2=0
+c3=0
+c4=0
+d1=0
+d2=0
+d3=0
+d4=0
+ar=[[a1,a2,a3,a4],[b1,b2,b3,b4],[c1,c2,c3,c4]
+    ,[d1,d2,d3,d4]]
+ar1=[[11,12,13,14],[21,22,23,24],[31,32,33,34]
+    ,[41,42,43,44]]
+print(ar)
+for i in range (len(ar)):
+    for j in range(len(ar)):
+        ar[i][j]=random.randint(5,9)
+        if (ar[i][j]!=9):
+            ar[i][j]=0
+for r in range(len(ar)):
+    for c in range (len(ar[0])):
+        print (str(ar[r][c]) + "  ", end = "")
+    print ("")
+for i in range(len(ar)):
+    for j in range(len(ar[0])):
+        if(ar[i][j]==9):
+            
+            if(i+1<4 and j>-1 and ar[i+1][j]!=9):
+                ar[i+1][j]=ar[i+1][j]+1
+            if(i+1<4 and j+1<4 and ar[i+1][j+1]!=9):
+                ar[i+1][j+1]=ar[i+1][j+1]+1
+            if(i+1<4 and j-1>-1 and ar[i+1][j-1]!=9):
+                ar[i+1][j-1]=ar[i+1][j-1]+1
+            if( j+1<4 and ar[i][j+1]!=9):
+                ar[i][j+1]=ar[i][j+1]+1
+            if(j-1>-1 and ar[i][j-1]!=9):
+                ar[i][j-1]=ar[i][j-1]+1
+            if(i-1>-1 and ar[i-1][j]!=9):
+                ar[i-1][j]=ar[i-1][j]+1
+            if(j+1<4 and i-1>-1 and ar[i-1][j+1]!=9):
+                ar[i-1][j+1]=ar[i-1][j+1]+1
+            if(i-1>-1 and j-1>-1 and ar[i-1][j-1]!=9):
+                ar[i-1][j-1]=ar[i-1][j-1]+1 
+print("")
+for r in range(len(ar)):
+    for c in range (len(ar[0])):
+        print (str(ar[r][c]) + "  ", end = "")
+    print ("")
