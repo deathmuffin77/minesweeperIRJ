@@ -1,10 +1,14 @@
 import random
-def createBoard(length, width):
+def askForParam(ask):
+    a=int(input("How long would you like the " + ask +"?"))
+    return a
+    
+def createBoard(length, width, cell):
     lengthAr=[]     
     for j in range(length):
         widthAr=[]
         for i in range(width):
-            widthAr.append(0)
+            widthAr.append(cell)
         lengthAr.append(widthAr)       
     return lengthAr
 def printBoardFancy(ar):
@@ -42,44 +46,83 @@ def calculateBombs(ar):
                 bombs=bombs+calculateBomb(ar,r+1,c,maxR,maxC)
                 bombs=bombs+calculateBomb(ar,r+1,c+1,maxR,maxC)
                 ar[r][c]=bombs
+
+def openSpace(name):
+    spaceCheck= int(input(name))-1
+    return spaceCheck
+    
+def loseCheck(ar,blankAr,row,column):
+    if(ar[row][column]==9):
+        return True
+    else:
+        return False
+def winCheck(ar,blankAr):
+    global length
+    global width
+    for i in range(length):
+        for j in range(width):
+            if(ar[i][j]!=9 and blankAr[i][j]=="#"):
+                return False
+    return True
+def openSpaces(ar,blankAr,row,column,maxR,maxC):
+    if(row<0 or row>=maxR or column<0 or column>=maxC):
+        return
+    if(blankAr[row][column]!="#"):
+        return
+    blankAr[row][column]=ar[row][column]
+    if(ar[row][column]!=0):
+        return
+    
+    else:  
+        openSpaces(ar,blankAr,row-1,column-1,maxR,maxC)
+        openSpaces(ar,blankAr,row-1,column,maxR,maxC)
+        openSpaces(ar,blankAr,row-1,column+1,maxR,maxC)
+        openSpaces(ar,blankAr,row,column-1,maxR,maxC)
+        openSpaces(ar,blankAr,row,column+1,maxR,maxC)
+        openSpaces(ar,blankAr,row+1,column-1,maxR,maxC)
+        openSpaces(ar,blankAr,row+1,column,maxR,maxC)
+        openSpaces(ar,blankAr,row+1,column+1,maxR,maxC)
+    
+    
                 
-board=createBoard(20,20) 
+    
+        
+ 
+def game(board,blankBoard):
+    win=False
+    lose=False
+    while(True):
+        rowCheck=openSpace("row")
+        columnCheck=openSpace("column")
+        if(loseCheck(board,blankBoard,rowCheck,columnCheck)==True):
+            print("lose")
+            break
+        maxR=len(board)
+        maxC=len(board[0])
+        openSpaces(board,blankBoard,rowCheck,columnCheck,maxR,maxC)
+        if(winCheck(board,blankBoard)==True):
+            print("")
+            printBoardFancy(blankBoard)
+            print("win")
+            break
+        
+        print("")
+        printBoardFancy(blankBoard)
+    printBoardFancy(board)
+         
+        
+        
+        
+        
+        
+        
+        
+length=askForParam("length")
+width=askForParam("Width")
+board=createBoard(length,width,0 )
 plantBombs(board)
 calculateBombs(board)
+blankBoard=createBoard(length,width,"#")
 printBoardFancy(board)
-'''
-for i in range (len(ar)):
-    for j in range(len(ar)):
-        ar[i][j]=random.randint(5,9)
-        if (ar[i][j]!=9):
-            ar[i][j]=0
-for r in range(len(ar)):
-    for c in range (len(ar[0])):
-        print (str(ar[r][c]) + "  ", end = "")
-    print ("")
-
-for i in range(len(ar)):
-    for j in range(len(ar[0])):
-        if(ar[i][j]==9):
-            
-            if(i+1<4 and j>-1 and ar[i+1][j]!=9):
-                ar[i+1][j]=ar[i+1][j]+1
-            if(i+1<4 and j+1<4 and ar[i+1][j+1]!=9):
-                ar[i+1][j+1]=ar[i+1][j+1]+1
-            if(i+1<4 and j-1>-1 and ar[i+1][j-1]!=9):
-                ar[i+1][j-1]=ar[i+1][j-1]+1
-            if( j+1<4 and ar[i][j+1]!=9):
-                ar[i][j+1]=ar[i][j+1]+1
-            if(j-1>-1 and ar[i][j-1]!=9):
-                ar[i][j-1]=ar[i][j-1]+1
-            if(i-1>-1 and ar[i-1][j]!=9):
-                ar[i-1][j]=ar[i-1][j]+1
-            if(j+1<4 and i-1>-1 and ar[i-1][j+1]!=9):
-                ar[i-1][j+1]=ar[i-1][j+1]+1
-            if(i-1>-1 and j-1>-1 and ar[i-1][j-1]!=9):
-                ar[i-1][j-1]=ar[i-1][j-1]+1 
-print("")
-for r in range(len(ar)):
-    for c in range (len(ar[0])):
-        print (str(ar[r][c]) + "  ", end = "")
-    print ("")'''
+printBoardFancy(blankBoard)
+game(board,blankBoard)
